@@ -1,0 +1,47 @@
+{
+  "name": "express-starter",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "dev": "nodemon  ./src/index.ts",
+    "jasmine": "jasmine",
+    "lint": "eslint . --ext .ts",
+    "lint:fix": "eslint --fix",
+    "format": "prettier --config .prettierrc --write src/**/*.ts",
+    "build": "npx tsc",
+    "test": "npm run build && npm run jasmine",
+    "start:prod": "npm run build && node build/index.js"
+  },
+  "author": "Sherif Elshamaa",
+  "license": "ISC",
+  "devDependencies": {
+    "@types/express": "^4.17.14",
+    "@types/fs-extra": "^9.0.13",
+    "@types/jasmine": "^4.3.0",
+    "@types/morgan": "^1.9.3",
+    "@types/node": "^18.7.18",
+    "@types/sharp": "^0.30.5",
+    "@types/supertest": "^2.0.12",
+    "@typescript-eslint/eslint-plugin": "^5.37.0",
+    "@typescript-eslint/parser": "^5.37.0",
+    "eslint": "^8.23.1",
+    "eslint-config-prettier": "^8.5.0",
+    "eslint-plugin-prettier": "^4.2.1",
+    "nodemon": "^2.0.19",
+    "prettier": "2.7.1",
+    "typescript": "^4.8.3"
+  },
+  "dependencies": {
+    "dotenv": "^16.0.2",
+    "express": "^4.18.1",
+    "express-validator": "^6.14.2",
+    "fs-extra": "^10.1.0",
+    "jasmine": "^4.4.0",
+    "jasmine-spec-reporter": "^7.0.0",
+    "morgan": "^1.10.0",
+    "pug": "^3.0.2",
+    "sharp": "^0.31.0",
+    "supertest": "^6.2.4"
+  }
+}
