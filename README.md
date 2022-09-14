@@ -5,19 +5,19 @@ How to build and start the server
 The project can be built and run in the following ways
 
 1. Install all dependencies
-npm i
+{npm i}
 
 2. Build
-npm run build
+{npm run build}
 
 3. Start the Server
-npm start
+{npm start}
 
 4. Linting
-npm run lint
+{npm run lint}
 
 5. Testing
-npm run test
+{npm run test}
 
 Endpoint-1
 /api/preview/?filename=<image_name>
