@@ -45,8 +45,29 @@ describe('Testing endpoints', () => {
     expect(res.status).toBe(400)
   })
 
+  it('get /api/convert should response status code 400 and error message filename is required', async () => {
+    const res = await req.get('/api/convert?width=500&height=500')
+    expect(res.body).toEqual({
+      errors: [{ msg: 'filename is required', param: 'filename', location: 'query' }]
+    })
+    expect(res.status).toBe(400)
+  })
+
   it('get /api/convert should response status code 200, convert image and show it', async () => {
     const res = await req.get('/api/convert?filename=fjord&width=500&height=500')
     expect(res.status).toBe(200)
+  })
+
+  it('get /api/preview should response status code 200 and show image', async () => {
+    const res = await req.get('/api/preview?filename=fjord')
+    expect(res.status).toBe(200)
+  })
+
+  it('get /api/preview should response status code 400 and error message filename is required', async () => {
+    const res = await req.get('/api/preview')
+    expect(res.status).toBe(400)
+    expect(res.body).toEqual({
+      errors: [{ msg: 'filename is required', param: 'filename', location: 'query' }]
+    })
   })
 })

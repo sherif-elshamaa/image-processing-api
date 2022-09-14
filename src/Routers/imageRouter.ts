@@ -1,5 +1,5 @@
 import express, { Router, Request, Response } from 'express'
-import { imageQueryValidator } from '../validators/imageValidator'
+import { imageQueryValidator, imagePreviewValidator } from '../validators/imageValidator'
 import { validationResult } from 'express-validator'
 import sharp from 'sharp'
 import fs from 'fs-extra'
@@ -37,12 +37,40 @@ route.get('/convert', imageQueryValidator(), async (req: Request, res: Response)
       } else {
         await fs.ensureDir(path.join(dir, './src/public/converted'))
         await sharp(filePath).resize(Number(width), Number(height)).toFile(convertPath)
-        res.render('preview', {
+        res.render('convert', {
           img: `public/converted/${filename}_${width}_${height}.jpg`,
           width: width,
           height: height
         })
         console.log('successfully resized')
+      }
+    } catch (error) {
+      console.error(error)
+      res.send(error)
+    }
+  }
+})
+
+route.get('/preview', imagePreviewValidator(), async (req: Request, res: Response) => {
+  const { filename } = req.query
+  const filePath = path.join(dir, `./src/public/images/${filename}.jpg`)
+  const errors = validationResult(req)
+
+  if (!errors.isEmpty()) {
+    return res.status(400).json({ errors: errors.array() })
+  } else {
+    try {
+      const imageSrcExist = await fs.pathExists(filePath)
+      if (!imageSrcExist) {
+        res.status(400).json({ error: `${filename}: image not found` })
+        console.log(`image not found in ${filePath}`)
+        return
+      } else {
+        res.render('preview', {
+          img: `public/images/${filename}.jpg`
+        })
+        console.log('image previewed')
+        return
       }
     } catch (error) {
       console.error(error)

@@ -13,4 +13,6 @@ const imageQueryValidator = () => [
     .isInt()
     .withMessage('height must be number')
 ]
-export { imageQueryValidator }
+
+const imagePreviewValidator = () => [query('filename').exists().withMessage('filename is required')]
+export { imageQueryValidator, imagePreviewValidator }
