@@ -1,7 +1,7 @@
 import express, { Router, Request, Response } from 'express'
 import { imageQueryValidator, imagePreviewValidator } from '../validators/imageValidator'
 import { validationResult } from 'express-validator'
-import sharp from 'sharp'
+import resizer from '../controllers/resizer'
 import fs from 'fs-extra'
 import path from 'path'
 
@@ -10,11 +10,14 @@ const route = Router()
 route.use('/public', express.static(path.join(dir, './src/public')))
 
 route.get('/convert', imageQueryValidator(), async (req: Request, res: Response) => {
-  const { filename, width, height } = req.query
-  const errors = validationResult(req)
+  const filename: string = req.query.filename as string
+  const width: string = req.query.width as string
+  const height: string = req.query.height as string
+
   const filePath = path.join(dir, `./src/public/images/${filename}.jpg`)
   const convertPath = path.join(dir, `./src/public/converted/${filename}_${width}_${height}.jpg`)
 
+  const errors = validationResult(req)
   if (!errors.isEmpty()) {
     return res.status(400).json({ errors: errors.array() })
   } else {
@@ -36,7 +39,9 @@ route.get('/convert', imageQueryValidator(), async (req: Request, res: Response)
         return
       } else {
         await fs.ensureDir(path.join(dir, './src/public/converted'))
-        await sharp(filePath).resize(Number(width), Number(height)).toFile(convertPath)
+
+        await resizer(filePath, width, height, convertPath)
+
         res.render('convert', {
           img: `public/converted/${filename}_${width}_${height}.jpg`,
           width: width,
