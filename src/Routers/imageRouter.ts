@@ -38,8 +38,6 @@ route.get('/convert', imageQueryValidator(), async (req: Request, res: Response)
         console.log(`image already exists in ${convertPath}`)
         return
       } else {
-        await fs.ensureDir(path.join(dir, './src/public/converted'))
-
         await resizer(filePath, width, height, convertPath)
 
         res.render('convert', {
